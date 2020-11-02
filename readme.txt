@@ -5,7 +5,7 @@ Donate link: https://www.paypal.me/voidcoder
 Requires at least: 4.4
 Requires PHP: 5.6
 Tested up to: 5.5
-Stable tag: 1.0.5
+Stable tag: 1.0.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -86,6 +86,8 @@ The Plugin's domain search depends on api call to external free service provided
 
 
 == Changelog ==
+= 1.0.6 =
+* Fix: Noticing Improvement
 = 1.0.4 =
 * Fixing loading issue of auto price inside editing screen, leading to a blank screen
 * currency choosing option for your pricing table to pull data from whmcs in different currency if that exists
