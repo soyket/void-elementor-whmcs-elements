@@ -89,11 +89,12 @@ register_activation_hook( __FILE__, 'void_ewhmcse_activation_time' );
 function void_ewhmcse_check_installation_time() {
 
     $spare_me = get_option('void_ewhmcse_spare_me');
+    $never_show_again = get_option('never_show_again_ewhmcsepro');
     if( !$spare_me ){
         $install_date = get_option( 'void_ewhmcse_elementor_activation_time' );
         $past_date = strtotime( '-7 days' );
      
-        if ( $past_date >= $install_date ) {
+        if ( $past_date >= $install_date && $never_show_again != 1  ) {
      
             add_action( 'admin_notices', 'void_ewhmcse_display_admin_notice' );
      
@@ -104,7 +105,7 @@ function void_ewhmcse_check_installation_time() {
   if( $spare_me_pro_value ){
         $past_date = strtotime( '-30 days' );
      
-        if ( $past_date >= $spare_me_pro_value ) {
+        if ( $past_date >= $spare_me_pro_value && $never_show_again != 1 ) {
      
             add_action( 'admin_notices', 'void_ewhmcse_display_admin_notice_pro' );
      
@@ -113,7 +114,7 @@ function void_ewhmcse_check_installation_time() {
     $install_date = get_option( 'void_ewhmcse_elementor_activation_time' );
         $past_date = strtotime( '-7 days' );
      
-        if ( $past_date >= $install_date ) {
+        if ( $past_date >= $install_date && $never_show_again != 1 ) {
      
             add_action( 'admin_notices', 'void_ewhmcse_display_admin_notice_pro' );
      
@@ -132,12 +133,13 @@ function void_ewhmcse_display_admin_notice() {
     if( $pagenow == 'index.php' ){
  
         $dont_disturb = esc_url( get_admin_url() . '?spare_me_ewhmcse=1' );
+        $never_show_again = esc_url( get_admin_url() . '?never_show_again_ewhmcsepro=1' );
         $plugin_info = get_plugin_data( __FILE__ , true, true );       
         $reviewurl = esc_url( 'https://wordpress.org/support/plugin/void-elementor-whmcs-elements/reviews/#new-post' );
         $void_url = esc_url( 'https://voidcoders.com' );
      
-        printf(__('<div class="void-whmcs-review wrap">You have been using <b> %s </b> for a while. We hope you liked it ! Please give us a quick rating, it works as a boost for us to keep working on the plugin ! Also you can visit our <a href="%s" target="_blank">site</a> to get more themes & Plugins<div class="void-whmcs-review-btn"><a href="%s" class="button button-primary" target=
-            "_blank">Rate Now!</a><a href="%s" class="void-whmcs-review-done"> Dismiss</a></div></div>', $plugin_info['TextDomain']), $plugin_info['Name'], $void_url, $reviewurl, $dont_disturb );
+        printf(__('<div style="position:relative;" class="void-whmcs-review wrap"><a style="position: absolute; right: 5px; top: 0; color: #FFF;" href="%s">X</a>You have been using <b> %s </b> for a while. We hope you liked it ! Please give us a quick rating, it works as a boost for us to keep working on the plugin ! Also you can visit our <a href="%s" target="_blank">site</a> to get more themes & Plugins<div class="void-whmcs-review-btn"><a href="%s" class="button button-primary" target=
+            "_blank">Rate Now!</a><a href="%s" class="void-whmcs-review-done"> Never show again</a></div></div>', $plugin_info['TextDomain']), $dont_disturb, $plugin_info['Name'], $void_url, $reviewurl, $never_show_again );
     }
 }
 /**
@@ -148,12 +150,13 @@ function void_ewhmcse_display_admin_notice_pro() {
     global $pagenow;
     if( $pagenow == 'index.php' ){
  
-        $dont_disturb = esc_url( get_admin_url() . '?spare_me_ewhmcsepro=1' );
+      $dont_disturb = esc_url( get_admin_url() . '?spare_me_ewhmcsepro=1' );
+      $never_show_again = esc_url( get_admin_url() . '?never_show_again_ewhmcsepro=1' );
         $plugin_info = get_plugin_data( __FILE__ , true, true );       
         $prourl = esc_url( 'https://voidcoders.com/product/elementor-whmcs-elements-pro/' );
         $logo_url = esc_url( plugins_url( 'assets/icon-128x128.png', __FILE__ ) );
-        printf(__('<div class="void-whmcs-review wrap"><div><img src="%s" /></div><div class="void-whmcs-review-text">Thank you for using <b> %s</b>. If you would like to have more features and integration with the Elementor Pro\'s pricing table you can grab the <b>Pro</b> version for only <em>14$</em> now! Hurry up before the price goes up!!<div class="void-whmcs-grab-btn"><a href="%s" class="btn-whmcs" target=
-            "_blank">Grab Now</a><a href="%s" class="void-whmcs-review-done"> Dismiss</a></div></div></div>', $plugin_info['TextDomain']), $logo_url, $plugin_info['Name'], $prourl, $dont_disturb );
+        printf(__('<div style="position:relative;" class="void-whmcs-review wrap"><a style="position: absolute; right: 5px; top: 0; color: #FFF;" href="%s">X</a><div><img src="%s" /></div><div class="void-whmcs-review-text">Thank you for using <b> %s</b>. If you would like to have more features and integration with the Elementor Pro\'s pricing table you can grab the <b>Pro</b> version for only <em>16$</em> now! Hurry up before the price goes up!!<div class="void-whmcs-grab-btn"><a href="%s" class="btn-whmcs" target=
+            "_blank">Grab Now</a><a href="%s" class="void-whmcs-review-done"> Never show again</a></div></div></div>', $plugin_info['TextDomain']),$dont_disturb, $logo_url, $plugin_info['Name'], $prourl, $never_show_again );
     }
 }
 // remove the notice for the user if review already done or if the user does not want to
@@ -172,6 +175,14 @@ function void_ewhmcse_spare_me(){
         if( $spare_me == 1 ){
             add_option( 'void_ewhmcse_spare_me_pro' , strtotime("now") );
             update_option( 'void_ewhmcse_spare_me_pro' , strtotime("now") );
+        }
+    }
+  if( isset( $_GET['never_show_again_ewhmcsepro'] ) && !empty( $_GET['never_show_again_ewhmcsepro'] ) ){
+        $spare_me = $_GET['never_show_again_ewhmcsepro'];
+
+        if( $spare_me == 1 ){
+            add_option( 'never_show_again_ewhmcsepro' , 1 );
+            update_option( 'never_show_again_ewhmcsepro' , 1 );
         }
     }
 }
