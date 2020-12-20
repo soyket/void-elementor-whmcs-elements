@@ -7,6 +7,8 @@
  * Author URI:  http://voidcoders.com
  * Plugin URI:  http://voidcoders.com/product/elementor-whmcs-elements/
  * Text Domain: void_ewhmcse
+ * Elementor tested up to: 3.0.14
+ * Elementor Pro tested up to: 3.0.8
  */
 /* This loads the plugin.php file which is the main one */
 
